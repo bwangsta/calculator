@@ -1,53 +1,57 @@
 const display = document.querySelector(".display p");
-const buttons = document.querySelectorAll("button");
+const numbers = document.querySelectorAll(".number");
+const operators = document.querySelectorAll(".operator");
+const equalBtn = document.querySelector(".equal");
+const clearBtn = document.querySelector(".clear");
+const deleteBtn = document.querySelector(".delete");
 
 let storedNumber = null;
-let operator = "";
+let operatorType = "";
 let displayNumber = "";
 let result;
-buttons.forEach(button => {
-    button.addEventListener("click", () => {
-        // if user clicked on a number, display number
-        // if user clicked on an operator, clear the display
-        // if user clicked on "clear", clear the display
-        // if user clicked on "=", show results
-        // after clicking on equals, chain if user clicks on an operator
-        // reset if user clicks on new number
-        let buttonValue = button.value;
-        // if storedNumber != null and user clicks on an arithmetic operator, that means that a previous number has already been inputted
-        // calculate the result and store the result in storedNumber
-        if (operatorClicked(buttonValue) && storedNumber !== null) {
-            result = operate(operator, storedNumber, Number(displayNumber));
-            display.textContent = result;
-            storedNumber = result;
-            displayNumber = "";
-            operator = buttonValue;
-        }
-        else if (numberClicked(buttonValue) && operator === "=") {
-            displayNumber += buttonValue;
+
+clearBtn.addEventListener("click", clearScreen);
+equalBtn.addEventListener("click", () => {
+    // if user clicked on "=", show results
+    result = operate(operatorType, storedNumber, Number(displayNumber))
+    display.textContent = result;
+    storedNumber = result;
+    displayNumber = "";
+    operatorType = equalBtn.value;
+});
+
+numbers.forEach(number => {
+    number.addEventListener("click", () => {
+        // reset if user clicks on a number right after equal sign
+        if (operatorType === "=") {
+            displayNumber += number.value;
             display.textContent = displayNumber;
             storedNumber = null;
         }
-        else if (buttonValue === "clear") {
-            clearScreen();
+        // if user clicked on a number, display number
+        else {
+            displayNumber += number.value;
+            display.textContent = displayNumber;
         }
-        else if (buttonValue === "=") {
-            result = operate(operator, storedNumber, Number(displayNumber))
+    });
+});
+operators.forEach(operator => {
+    // if user clicked on an operator, clear the display
+    operator.addEventListener("click", () => {
+        // Chain if user clicks on an operator
+        if (storedNumber !== null) {
+            result = operate(operatorType, storedNumber, Number(displayNumber));
             display.textContent = result;
             storedNumber = result;
             displayNumber = "";
-            operator = buttonValue;
+            operatorType = operator.value;
         }
-        else if (operatorClicked(buttonValue)) {
+        else {
             storedNumber = Number(displayNumber);
             displayNumber = "";
-            operator = buttonValue;
+            operatorType = operator.value;
         }
-        else if (numberClicked(buttonValue)) {
-            displayNumber += buttonValue;
-            display.textContent = displayNumber;
-        }
-    })
+    });
 });
 
 function add(num1, num2) {
@@ -82,21 +86,13 @@ function operate(operator, num1, num2) {
             result = divide(num1, num2);
             break;
     }
-
     return result;
 }
 
-function operatorClicked(buttonValue) {
-    return ["+", "-", "x", "÷"].includes(buttonValue);
-}
-
-function numberClicked(buttonValue) {
-    return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(buttonValue);
-}
 
 function clearScreen() {
     display.textContent = "0";
     displayNumber = "";
     storedNumber = null;
-    operator = "";
+    operatorType = "";
 }
