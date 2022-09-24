@@ -23,22 +23,50 @@ main {
 
 button {
   width: 100%;
+  border-radius: 5px;
+  font-size: 1.5em;
+}
+
+p {
+  margin: 0;
 }
 
 .calculator {
   display: flex;
   flex-direction: column;
   width: 250px;
-  height: 250px;
+  height: 500px;
   border: 2px solid black;
+  border-radius: 20px;
+  background-color: black;
 }
 
 .display-window {
-  border: 1px solid black;
-  margin: 5px;
+  padding: 25px 10px;
+  font-size: 3em;
+  text-align: end;
+  color: white;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 5px;
 }
 
 .row {
   display: flex;
-  /* flex: 1; */
+  flex-grow: 1;
+}
+
+.operator,
+.equal {
+  background-color: orange;
+  color: white;
+}
+
+.number {
+  background-color: gray;
+  color: white;
 }
