@@ -11,6 +11,7 @@ let displayNumber = "";
 let result;
 
 clearBtn.addEventListener("click", clearScreen);
+deleteBtn.addEventListener("click", backspace);
 equalBtn.addEventListener("click", () => {
     // if user clicked on "=", show results
     result = operate(operatorType, storedNumber, Number(displayNumber))
@@ -89,6 +90,10 @@ function operate(operator, num1, num2) {
     return result;
 }
 
+function backspace() {
+    displayNumber = displayNumber.slice(0, -1);
+    display.textContent = displayNumber;
+}
 
 function clearScreen() {
     display.textContent = "0";
