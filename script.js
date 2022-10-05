@@ -8,13 +8,12 @@ const deleteBtn = document.querySelector(".delete");
 let storedNumber = null;
 let operatorType = "";
 let displayNumber = "";
-let result;
 
 clearBtn.addEventListener("click", clearScreen);
 deleteBtn.addEventListener("click", backspace);
 equalBtn.addEventListener("click", () => {
     // if user clicked on "=", show results
-    result = operate(operatorType, storedNumber, Number(displayNumber))
+    let result = operate(operatorType, storedNumber, Number(displayNumber));
     display.textContent = result;
     storedNumber = result;
     displayNumber = "";
@@ -40,7 +39,11 @@ operators.forEach(operator => {
     // if user clicked on an operator, clear the display
     operator.addEventListener("click", () => {
         // Chain if user clicks on an operator
-        if (storedNumber !== null) {
+        // if previous operator was =, change previous operator to current operator.
+        if (operatorType === "=") {
+            operatorType = operator.value;
+        }
+        else if (storedNumber !== null) {
             result = operate(operatorType, storedNumber, Number(displayNumber));
             display.textContent = result;
             storedNumber = result;
